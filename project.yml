@@ -1,0 +1,25 @@
+name: NewJoinerJargon
+options:
+  bundleIdPrefix: com.lia.newjoinerjargon
+  deploymentTarget:
+    macOS: "26.0"
+  xcodeVersion: "26.2"
+
+targets:
+  NewJoinerJargon:
+    type: application
+    platform: macOS
+    sources:
+      - NewJoinerJargon
+    entitlements:
+      path: NewJoinerJargon/NewJoinerJargon.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lia.newjoinerjargon
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: 1
+        SWIFT_VERSION: "6.0"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        INFOPLIST_KEY_LSUIElement: true
+        GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_KEY_NSAppleEventsUsageDescription: "New Joiner Jargon needs to communicate with your browser to detect the current tab URL when capturing terms."

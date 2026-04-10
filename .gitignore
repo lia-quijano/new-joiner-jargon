@@ -1,0 +1,21 @@
+# Xcode user data
+xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Build
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# macOS
+.DS_Store
+*.swp
+*~
+
+# SwiftData local database
+*.store
+*.store-shm
+*.store-wal
+.terraria/
