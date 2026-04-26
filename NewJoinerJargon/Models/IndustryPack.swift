@@ -15,7 +15,7 @@ struct IndustryPack: Identifiable {
 }
 
 extension IndustryPack {
-    static let all: [IndustryPack] = [engineering, finance, marketing, product, people, legal]
+    static let all: [IndustryPack] = [engineering, finance, marketing, product, people, legal, media]
 
     static let engineering = IndustryPack(
         id: "engineering",
@@ -261,6 +261,58 @@ extension IndustryPack {
             SeedTerm("PCI-DSS", "Payment Card Industry Data Security Standard. A set of security requirements for any company that stores, processes, or transmits card payment data.", .regulatory),
             SeedTerm("Consent", "Under data protection law, a freely given, informed agreement from an individual to have their data collected or processed for a specific purpose.", .regulatory),
             SeedTerm("Regulatory sandbox", "A controlled environment where startups can test new products or business models with relaxed regulatory requirements — common in fintech.", .regulatory),
+        ]
+    )
+    static let media = IndustryPack(
+        id: "media",
+        name: "Media & Ad Tech",
+        icon: "newspaper",
+        color: .cyan,
+        terms: [
+            // Ad tech
+            SeedTerm("RTB", "Real-Time Bidding. An automated auction that buys and sells a single digital ad impression in the milliseconds it takes a page to load.", .business),
+            SeedTerm("DSP", "Demand Side Platform. Software that lets advertisers buy digital ad inventory across many publisher sites through a single interface.", .business),
+            SeedTerm("SSP", "Supply Side Platform. Software that lets publishers sell their ad inventory to the highest-bidding advertiser automatically.", .business),
+            SeedTerm("DMP", "Data Management Platform. A system for collecting, organising, and activating third-party audience data for ad targeting.", .business),
+            SeedTerm("CDP", "Customer Data Platform. A unified database of first-party customer data — from web, email, CRM, and more — that marketing teams can act on directly.", .business),
+            SeedTerm("DFP", "DoubleClick for Publishers (now Google Ad Manager). An ad server used by publishers to manage, serve, and report on their ad inventory.", .business),
+            SeedTerm("PPC", "Pay-Per-Click. An advertising model where the advertiser pays only when someone clicks on the ad, not just for the impression.", .business),
+            SeedTerm("PV", "Page View. A single instance of a page being loaded by a browser — one of the most basic metrics of site traffic.", .business),
+            SeedTerm("UV", "Unique Visitor. The number of distinct individuals who visited a site within a given period, regardless of how many times they came back.", .business),
+            // Marketing tech & strategy
+            SeedTerm("CMS", "Content Management System. Software for creating, managing, and publishing digital content without needing to write code — e.g. WordPress, Contentful.", .business),
+            SeedTerm("ESP", "Email Service Provider. A platform for sending bulk and automated marketing emails at scale — e.g. Mailchimp, Klaviyo, HubSpot.", .business),
+            SeedTerm("CRM", "Customer Relationship Management. A platform for tracking and managing all interactions with current and potential customers — e.g. Salesforce, HubSpot.", .business),
+            SeedTerm("MA", "Marketing Automation. Using software to automatically send the right message to the right person at the right time, across email, social, and ads.", .business),
+            SeedTerm("CMP", "Consent Management Platform. A tool that records and manages user consent choices for cookies and data collection, required under GDPR.", .regulatory),
+            SeedTerm("ABM", "Account-Based Marketing. A strategy targeting a specific list of high-value companies with highly personalised campaigns, rather than broad audiences.", .business),
+            SeedTerm("CRO", "Conversion Rate Optimisation. The practice of improving a website or landing page to increase the percentage of visitors who take a desired action.", .business),
+            SeedTerm("MARCOM", "Marketing Communications. The mix of messaging and channels a brand uses to communicate with its audiences — ads, PR, email, content, events.", .business),
+            SeedTerm("CPA", "Cost Per Action. The cost incurred each time a user completes a defined action — a form fill, download, or purchase.", .business),
+            SeedTerm("ARM", "Audience Relationship Management. A strategic and technical approach to understanding and maximising engagement with a media brand's audience.", .business),
+            SeedTerm("SERPs", "Search Engine Results Pages. The pages shown by Google (or Bing, etc.) after a search query — ranking here is the goal of SEO.", .business),
+            SeedTerm("SMM", "Social Media Marketing. Using platforms like Instagram, LinkedIn, or X to promote a brand, drive traffic, or build community.", .business),
+            SeedTerm("WOM", "Word of Mouth. Unpaid promotion through people organically telling others about a product — one of the most trusted and cost-effective channels.", .business),
+            // Analytics & data
+            SeedTerm("KPI", "Key Performance Indicator. A specific, measurable metric used to evaluate whether a team or campaign is hitting its goals.", .business),
+            SeedTerm("GA", "Google Analytics. A free web analytics service tracking how users find and interact with a website — sessions, sources, conversions, and more.", .business),
+            SeedTerm("BI", "Business Intelligence. Tools and strategies for collecting, analysing, and visualising company data to support better decisions.", .business),
+            SeedTerm("CR", "Conversion Rate. The percentage of users who complete a desired action — calculated as conversions divided by total visitors.", .business),
+            // Business fundamentals
+            SeedTerm("B2B", "Business-to-Business. A company that sells products or services to other businesses, rather than directly to individual consumers.", .business),
+            SeedTerm("B2C", "Business-to-Consumer. A company that sells directly to end users or the general public.", .business),
+            SeedTerm("QBR", "Quarterly Business Review. A regular meeting with clients or stakeholders to review performance, share insights, and align on plans for the next quarter.", .business),
+            SeedTerm("SWOT", "Strengths, Weaknesses, Opportunities, Threats. A simple framework for evaluating a business, product, or strategy from four angles.", .business),
+            SeedTerm("SMB", "Small-to-Medium Business. Companies with roughly 10–1,000 employees — often a distinct target segment with different needs from enterprise clients.", .business),
+            SeedTerm("BANT", "Budget, Authority, Need, Timeline. A sales qualification framework used to assess whether a prospect is genuinely ready to buy.", .business),
+            // Tech
+            SeedTerm("SaaS", "Software as a Service. Software hosted in the cloud and accessed via subscription — no installation needed. E.g. Slack, Notion, Salesforce.", .engineering),
+            SeedTerm("UX", "User Experience. The overall quality of how a person feels when interacting with a product — covering usability, flow, and satisfaction.", .engineering),
+            SeedTerm("UI", "User Interface. The visual elements a user interacts with — buttons, menus, screens — the look and feel layer of a product.", .engineering),
+            SeedTerm("ML", "Machine Learning. A branch of AI where systems learn from data to improve their performance on tasks without being explicitly reprogrammed.", .engineering),
+            // Privacy
+            SeedTerm("PII", "Personally Identifiable Information. Any data that could identify a specific individual — name, email, IP address, location.", .regulatory),
+            SeedTerm("DPO", "Data Protection Officer. A legally required role in some organisations responsible for overseeing data privacy compliance with GDPR and similar laws.", .regulatory),
         ]
     )
 }
