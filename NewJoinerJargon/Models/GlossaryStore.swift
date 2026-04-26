@@ -12,13 +12,21 @@ final class GlossaryStore {
 
     init() {
         let schema = Schema([GlossaryTerm.self])
-        let config = ModelConfiguration("NewJoinerJargon", isStoredInMemoryOnly: false)
+        let config = ModelConfiguration(url: Self.storeURL())
         do {
             container = try ModelContainer(for: schema, configurations: [config])
             context = ModelContext(container)
         } catch {
             fatalError("Failed to create ModelContainer: \(error)")
         }
+    }
+
+    private static func storeURL() -> URL {
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.lia.newjoinerjargon.public"
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        let dir = appSupport.appendingPathComponent(bundleID)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir.appendingPathComponent("NewJoinerJargon.store")
     }
 
     func save(

@@ -13,6 +13,7 @@ enum SortOption: String, CaseIterable, Identifiable {
 
 struct GlossaryListView: View {
     @Environment(GlossaryStore.self) private var store
+    @Environment(SettingsManager.self) private var settings
     @Environment(NavigationState.self) private var navigation
     @State private var searchText = ""
     @State private var selectedTerms: Set<GlossaryTerm> = []
@@ -408,33 +409,44 @@ struct GlossaryListView: View {
     }
 
     private var emptyState: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "book.closed")
-                .font(.system(size: 48))
-                .foregroundStyle(.secondary)
-            Text("Your glossary is empty")
-                .font(.title2.bold())
-            Text("Select a word in any app and press **⌃⌥J** to start building your personal jargon dictionary.")
-                .font(.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: 300)
+        Group {
+            if !settings.hasCompletedOnboarding {
+                ScrollView {
+                    OnboardingView()
+                        .frame(maxWidth: 480)
+                        .padding(.vertical, 40)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                VStack(spacing: 16) {
+                    Image(systemName: "book.closed")
+                        .font(.system(size: 48))
+                        .foregroundStyle(.secondary)
+                    Text("Your glossary is empty")
+                        .font(.title2.bold())
+                    Text("Select a word in any app and press **⌃⌥J** to start building your personal jargon dictionary.")
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 300)
 
-            Divider()
-                .frame(width: 200)
-                .padding(.vertical, 8)
+                    Divider()
+                        .frame(width: 200)
+                        .padding(.vertical, 8)
 
-            VStack(alignment: .leading, spacing: 12) {
-                Label("Highlight a word anywhere", systemImage: "text.cursor")
-                Label("Press ⌃⌥J to capture it", systemImage: "keyboard")
-                Label("Add a definition & category", systemImage: "tag")
-                Label("Build your knowledge base", systemImage: "book.closed.fill")
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Highlight a word anywhere", systemImage: "text.cursor")
+                        Label("Press ⌃⌥J to capture it", systemImage: "keyboard")
+                        Label("Add a definition & category", systemImage: "tag")
+                        Label("Build your knowledge base", systemImage: "book.closed.fill")
+                    }
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                }
+                .padding(40)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .font(.callout)
-            .foregroundStyle(.secondary)
         }
-        .padding(40)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var sortAndFilterMenu: some View {
