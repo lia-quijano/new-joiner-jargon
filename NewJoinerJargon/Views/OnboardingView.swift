@@ -247,16 +247,26 @@ private struct WelcomePackCard: View {
     @State private var isHovered = false
 
     private var sampleTerms: [String] {
-        Array(pack.terms.prefix(3).map { $0.displayLabel })
+        pack.terms
+            .filter { $0.displayLabel != $0.term }
+            .prefix(3)
+            .map { $0.displayLabel }
     }
 
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .top) {
-                    Image(systemName: pack.icon)
-                        .font(.title2)
-                        .foregroundStyle(pack.color)
+                    if let customIcon = pack.customIcon {
+                        Image(customIcon)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 48, height: 48)
+                    } else {
+                        Image(systemName: pack.icon)
+                            .font(.title2)
+                            .foregroundStyle(pack.color)
+                    }
 
                     Spacer()
 
