@@ -29,9 +29,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         let controller = NSHostingController(rootView: view)
         let window = NSWindow(contentViewController: controller)
         window.title = "My Glossary"
-        window.setContentSize(NSSize(width: 800, height: 600))
-        window.minSize = NSSize(width: 600, height: 500)
-        window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+
+        if settings.hasCompletedOnboarding {
+            window.setContentSize(NSSize(width: 800, height: 600))
+            window.minSize = NSSize(width: 600, height: 500)
+            window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+        } else {
+            let screen = NSScreen.main ?? NSScreen.screens[0]
+            let frame = screen.visibleFrame
+            let w = (frame.width * 0.6).rounded()
+            let h = (frame.height * 0.6).rounded()
+            window.setContentSize(NSSize(width: w, height: h))
+            window.styleMask = [.titled, .closable]
+        }
+
         window.center()
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
@@ -97,7 +108,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     }
 
     @objc private func togglePopover() {
-        guard settings.hasCompletedOnboarding else { return }
+        guard settings.hasCompletedOnboarding else {
+            openGlossaryWindow()
+            return
+        }
         if popover.isShown {
             popover.performClose(nil)
         } else {

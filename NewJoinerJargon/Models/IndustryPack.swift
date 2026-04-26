@@ -20,8 +20,18 @@ struct IndustryPack: Identifiable {
     let id: String
     let name: String
     let icon: String
+    let customIcon: String?
     let color: Color
     let terms: [SeedTerm]
+
+    init(id: String, name: String, icon: String, customIcon: String? = nil, color: Color, terms: [SeedTerm]) {
+        self.id = id
+        self.name = name
+        self.icon = icon
+        self.customIcon = customIcon
+        self.color = color
+        self.terms = terms
+    }
 }
 
 extension IndustryPack {
@@ -33,6 +43,7 @@ extension IndustryPack {
         id: "engineering",
         name: "Engineering",
         icon: "chevron.left.forwardslash.chevron.right",
+        customIcon: "pack-engineering",
         color: .purple,
         terms: [
             SeedTerm("PR", "Pull Request. A proposed change to a codebase submitted for review by teammates before being merged into the main branch.", .engineering),
@@ -77,6 +88,7 @@ extension IndustryPack {
         id: "finance",
         name: "Finance",
         icon: "chart.line.uptrend.xyaxis",
+        customIcon: "pack-finance",
         color: .indigo,
         terms: [
             SeedTerm("ARR", "Annual Recurring Revenue. The value of subscription revenue normalised to a one-year figure.", .finance),
@@ -118,6 +130,7 @@ extension IndustryPack {
         id: "marketing",
         name: "Marketing",
         icon: "megaphone",
+        customIcon: "pack-marketing",
         color: .orange,
         terms: [
             SeedTerm("CTR", "Click-Through Rate. The percentage of people who clicked a link or ad out of the total who saw it.", .business),
@@ -161,6 +174,7 @@ extension IndustryPack {
         id: "product",
         name: "Product",
         icon: "shippingbox",
+        customIcon: "pack-product",
         color: .pink,
         terms: [
             SeedTerm("OKR", "Objectives and Key Results. A goal-setting framework pairing an ambitious objective with measurable outcomes to track progress.", .product),
@@ -203,6 +217,7 @@ extension IndustryPack {
         id: "people",
         name: "People & HR",
         icon: "person.2",
+        customIcon: "pack-people",
         color: .teal,
         terms: [
             SeedTerm("1:1", "A regular private meeting between a manager and a direct report, used to discuss work, growth, and blockers.", .people),
@@ -242,6 +257,7 @@ extension IndustryPack {
         id: "legal",
         name: "Legal & Compliance",
         icon: "checkmark.shield",
+        customIcon: "pack-legal",
         color: .green,
         terms: [
             SeedTerm("NDA", "Non-Disclosure Agreement. A legal contract that prevents parties from sharing confidential information with outsiders.", .regulatory),
@@ -279,6 +295,7 @@ extension IndustryPack {
         id: "media",
         name: "Media & Ad Tech",
         icon: "newspaper",
+        customIcon: "pack-media-adtech",
         color: .cyan,
         terms: [
             // Ad tech
@@ -332,6 +349,7 @@ extension IndustryPack {
         id: "design",
         name: "Design",
         icon: "paintbrush",
+        customIcon: "pack-design",
         color: .mint,
         terms: [
             SeedTerm("Design system", "A shared library of reusable components, styles, and guidelines that ensure visual and functional consistency across a product.", .product),
@@ -357,7 +375,7 @@ extension IndustryPack {
             SeedTerm("Information architecture", "The organisation and structure of content in a product, determining how users navigate and find what they need.", .product),
             SeedTerm("Interaction design", "The discipline of defining how users interact with a product — gestures, transitions, states, and the feedback the system gives in response.", .product),
             SeedTerm("Design debt", "Accumulated inconsistencies, outdated patterns, or quick fixes in the UI that slow down future design and development work.", .product),
-            SeedTerm("Low-fi / High-fi", "Low-fidelity (rough sketches or wireframes) vs high-fidelity (polished, pixel-perfect designs) — stages of increasing refinement in the design process.", .product),
+            SeedTerm("Low-fi / High-fi", "Low-fidelity vs High-fidelity. Stages of increasing design refinement — from rough sketches and wireframes (lo-fi) to polished, pixel-perfect visuals (hi-fi).", .product),
             SeedTerm("Annotation", "A note added to a design file explaining intended behaviour, edge cases, or developer instructions — separate from the visual design itself.", .product),
             SeedTerm("Component library", "A centralised collection of UI components kept in sync between design and code — the living implementation of a design system.", .product),
             SeedTerm("Card sorting", "A UX research method where users organise content into groups, used to understand mental models and inform navigation structure.", .product),
@@ -371,6 +389,7 @@ extension IndustryPack {
         id: "sales",
         name: "Sales",
         icon: "briefcase",
+        customIcon: "pack-sales",
         color: .red,
         terms: [
             SeedTerm("SDR", "Sales Development Representative. A role focused on outbound prospecting and qualifying leads before passing them to an account executive to close.", .business),
@@ -410,6 +429,7 @@ extension IndustryPack {
         id: "data",
         name: "Data & Analytics",
         icon: "tablecells",
+        customIcon: "pack-data",
         color: .blue,
         terms: [
             SeedTerm("ETL", "Extract, Transform, Load. A pipeline that pulls data from source systems, reshapes it into a usable format, and loads it into a data warehouse.", .engineering),
@@ -449,6 +469,7 @@ extension IndustryPack {
         id: "customerSuccess",
         name: "Customer Success",
         icon: "checkmark.seal",
+        customIcon: "pack-customer-success",
         color: .yellow,
         terms: [
             SeedTerm("CSM", "Customer Success Manager. The primary relationship owner for a customer after they've signed — responsible for onboarding, adoption, and renewal.", .business),
@@ -488,6 +509,7 @@ extension IndustryPack {
         id: "operations",
         name: "Operations",
         icon: "gearshape.2",
+        customIcon: "pack-operations",
         color: .brown,
         terms: [
             SeedTerm("SOP", "Standard Operating Procedure. A documented, step-by-step process for completing a recurring task consistently and correctly.", .business),
@@ -527,6 +549,7 @@ extension IndustryPack {
         id: "payments",
         name: "Payments & Fintech",
         icon: "banknote",
+        customIcon: "pack-payments-fintech",
         color: Color(red: 0.12, green: 0.68, blue: 0.45),
         terms: [
             SeedTerm("PSP", "Payment Service Provider. A company that processes card and payment transactions on behalf of merchants — e.g. Stripe, Adyen, Checkout.com.", .payments),
@@ -566,6 +589,7 @@ extension IndustryPack {
         id: "healthcare",
         name: "Healthcare & MedTech",
         icon: "stethoscope",
+        customIcon: "pack-healthcare",
         color: Color(red: 0.85, green: 0.25, blue: 0.35),
         terms: [
             SeedTerm("HIPAA", "Health Insurance Portability and Accountability Act. US law setting standards for protecting sensitive patient health information — any company handling medical data must comply.", .regulatory),
@@ -605,6 +629,7 @@ extension IndustryPack {
         id: "consulting",
         name: "Consulting",
         icon: "lightbulb",
+        customIcon: "pack-consulting",
         color: Color(red: 0.35, green: 0.4, blue: 0.75),
         terms: [
             SeedTerm("Engagement", "A consulting project or active client relationship. 'Being on engagement' means you're working with a client on a defined piece of work.", .business),
@@ -619,6 +644,7 @@ extension IndustryPack {
             SeedTerm("Hypothesis-driven", "An approach that starts with an educated guess and structures all work to prove or disprove it — faster and more focused than open-ended research.", .business),
             SeedTerm("Scoping", "Defining exactly what an engagement covers — the problem, the outputs, the timeline, and the explicit boundaries — to align expectations before work begins.", .business),
             SeedTerm("SOW", "Statement of Work. A formal document detailing the scope, deliverables, timeline, and cost of a specific engagement between the firm and client.", .regulatory),
+            SeedTerm("RFP", "Request for Proposal. A formal document issued by a client seeking external consultants — outlining scope, objectives, and evaluation criteria for a project.", .business),
             SeedTerm("Thought leadership", "Research, frameworks, or points of view published by a consulting firm to demonstrate expertise and attract new clients.", .business),
             SeedTerm("Bench", "Time when a consultant is not on a billable engagement — between projects, waiting for the next staffing assignment.", .business),
             SeedTerm("Staffing", "The process of assigning consultants to engagements based on skills, seniority, availability, and client fit.", .business),
@@ -644,6 +670,7 @@ extension IndustryPack {
         id: "vcStartups",
         name: "Startups & VC",
         icon: "sparkles",
+        customIcon: "pack-startups-vc",
         color: Color(red: 0.95, green: 0.6, blue: 0.15),
         terms: [
             SeedTerm("SAFE", "Simple Agreement for Future Equity. A common early-stage investment instrument where an investor provides money now in exchange for equity at a future round, at an agreed valuation cap or discount.", .finance),
@@ -683,6 +710,7 @@ extension IndustryPack {
         id: "cybersecurity",
         name: "Cybersecurity",
         icon: "lock.shield",
+        customIcon: "pack-cybersecurity",
         color: Color(red: 0.35, green: 0.1, blue: 0.75),
         terms: [
             SeedTerm("Pentest", "Penetration testing. An authorised simulated attack on a system to find vulnerabilities before real attackers do.", .engineering),
@@ -722,6 +750,7 @@ extension IndustryPack {
         id: "ecommerce",
         name: "Ecommerce & Retail",
         icon: "cart",
+        customIcon: "pack-ecommerce",
         color: Color(red: 0.1, green: 0.55, blue: 0.85),
         terms: [
             SeedTerm("SKU", "Stock Keeping Unit. A unique identifier for a specific product variant — size, colour, model — used to track inventory and sales precisely.", .business),
@@ -761,6 +790,7 @@ extension IndustryPack {
         id: "climateESG",
         name: "Climate & ESG",
         icon: "leaf",
+        customIcon: "pack-climate",
         color: Color(red: 0.15, green: 0.6, blue: 0.3),
         terms: [
             SeedTerm("ESG", "Environmental, Social and Governance. A framework for evaluating a company's non-financial risks and responsibilities — increasingly used by investors, regulators, and boards.", .regulatory),
@@ -800,6 +830,7 @@ extension IndustryPack {
         id: "gaming",
         name: "Gaming",
         icon: "gamecontroller",
+        customIcon: "pack-gaming",
         color: Color(red: 0.65, green: 0.1, blue: 0.9),
         terms: [
             SeedTerm("GaaS", "Games as a Service. A business model where a game is delivered as an ongoing live product with continuous updates, events, and monetisation — rather than a one-time purchase.", .business),
