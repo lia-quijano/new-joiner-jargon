@@ -5,7 +5,6 @@ struct PopoverView: View {
     @Environment(SettingsManager.self) private var settings
     @Environment(CaptureState.self) private var capture
     @Environment(NavigationState.self) private var navigation
-    @Environment(\.openWindow) private var openWindow
 
     @State private var inputText = ""
     @State private var definition = ""
@@ -55,7 +54,7 @@ struct PopoverView: View {
                     .font(.headline)
                 Spacer()
                 Button {
-                    openWindow(id: "glossary")
+                    (NSApp.delegate as? AppDelegate)?.openGlossaryWindow()
                 } label: {
                     Image(systemName: "list.bullet")
                         .foregroundStyle(.secondary)
@@ -289,7 +288,7 @@ struct PopoverView: View {
             // Footer
             HStack {
                 Button {
-                    openWindow(id: "glossary")
+                    (NSApp.delegate as? AppDelegate)?.openGlossaryWindow()
                 } label: {
                     HStack(spacing: 4) {
                         Text("\(store.allTerms().count) terms saved")
@@ -316,10 +315,6 @@ struct PopoverView: View {
             handleCapture(newValue)
         }
         .onAppear {
-            if !settings.hasCompletedOnboarding {
-                NSApp.activate(ignoringOtherApps: true)
-                openWindow(id: "glossary")
-            }
             hasPermission = AccessibilityService.hasPermission
             if !capture.term.isEmpty {
                 handleCapture(capture.term)
@@ -374,7 +369,7 @@ struct PopoverView: View {
                     isHighlighted: newlyAddedId == recent.id
                 ) {
                     navigation.navigateTo(term: recent.term)
-                    openWindow(id: "glossary")
+                    (NSApp.delegate as? AppDelegate)?.openGlossaryWindow()
                 }
                 .transition(.asymmetric(
                     insertion: .move(edge: .top).combined(with: .opacity),
