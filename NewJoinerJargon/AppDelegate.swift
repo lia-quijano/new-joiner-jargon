@@ -12,6 +12,32 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     let navigationState = NavigationState()
 
     private var hotkeyService: HotkeyService?
+    private var glossaryWindow: NSWindow?
+
+    func openGlossaryWindow() {
+        if let window = glossaryWindow, window.isVisible {
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+
+        let view = GlossaryListView()
+            .environment(glossaryStore)
+            .environment(settings)
+            .environment(navigationState)
+
+        let controller = NSHostingController(rootView: view)
+        let window = NSWindow(contentViewController: controller)
+        window.title = "My Glossary"
+        window.setContentSize(NSSize(width: 800, height: 600))
+        window.minSize = NSSize(width: 600, height: 500)
+        window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+        window.center()
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+
+        glossaryWindow = window
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Create the status bar item
@@ -42,12 +68,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         // Setup hotkey
         setupHotkey()
 
-        // On first launch, briefly show the popover so PopoverView can open the glossary window.
-        // The popover is transient and auto-closes once the window takes focus.
         if !settings.hasCompletedOnboarding {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                self.showPopover()
-            }
+            openGlossaryWindow()
         }
 
         // Only auto-prompt returning users — new users go through the onboarding wizard
