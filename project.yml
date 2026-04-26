@@ -1,6 +1,6 @@
 name: NewJoinerJargon
 options:
-  bundleIdPrefix: com.lia.newjoinerjargon
+  bundleIdPrefix: com.lia.newjoinerjargon.public
   deploymentTarget:
     macOS: "26.0"
   xcodeVersion: "26.2"
@@ -15,7 +15,7 @@ targets:
       path: NewJoinerJargon/NewJoinerJargon.entitlements
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.lia.newjoinerjargon
+        PRODUCT_BUNDLE_IDENTIFIER: com.lia.newjoinerjargon.public
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: 1
         SWIFT_VERSION: "6.0"

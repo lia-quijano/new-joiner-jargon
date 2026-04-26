@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		26FBADC63F0E326177C75717 /* CaptureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FBB2C5F45C6D18DA658C7 /* CaptureState.swift */; };
+		35301501818184952C4FC859 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F732845D2908F878D82E1B4C /* Assets.xcassets */; };
 		45C41FFBB674F3B07154DA2B /* NavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE612C6EEB38926B53B0505A /* NavigationState.swift */; };
 		494FCBA84747E3EFF9F91C6A /* IndustryPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289DD65B109CD8A81E51E55 /* IndustryPack.swift */; };
 		5662AC8FB6423235D66E90FB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1940393219EAE85681E3970 /* SettingsView.swift */; };
@@ -46,6 +47,7 @@
 		E7149716009B7E32D966504D /* NewJoinerJargon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewJoinerJargon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE00EC936ACDB986A989967F /* GlossaryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlossaryListView.swift; sourceTree = "<group>"; };
 		F464245F0C194A5E85676B8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F732845D2908F878D82E1B4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				F464245F0C194A5E85676B8A /* AppDelegate.swift */,
+				F732845D2908F878D82E1B4C /* Assets.xcassets */,
 				9DECBD2A8A8006F3F93CC89C /* NewJoinerJargon.entitlements */,
 				B75CCB7545B9FBD24744C0F1 /* NewJoinerJargonApp.swift */,
 				7AA1D8183D417EDA26C36561 /* Models */,
@@ -122,6 +125,7 @@
 			buildConfigurationList = 35BC41429EA41D6ED0F6BDE2 /* Build configuration list for PBXNativeTarget "NewJoinerJargon" */;
 			buildPhases = (
 				2F73A26C8EDAE7040E06C702 /* Sources */,
+				9F422C43B7A8F4F007E74292 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -163,6 +167,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9F422C43B7A8F4F007E74292 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35301501818184952C4FC859 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2F73A26C8EDAE7040E06C702 /* Sources */ = {
@@ -264,7 +279,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lia.newjoinerjargon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lia.newjoinerjargon.public;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
 			};
@@ -286,7 +301,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lia.newjoinerjargon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lia.newjoinerjargon.public;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 6.0;
 			};
