@@ -41,11 +41,7 @@ struct PopoverView: View {
     }
 
     var body: some View {
-        if !settings.hasCompletedOnboarding {
-            OnboardingView()
-        } else {
-            mainView
-        }
+        mainView
     }
 
     @ViewBuilder
@@ -320,6 +316,10 @@ struct PopoverView: View {
             handleCapture(newValue)
         }
         .onAppear {
+            if !settings.hasCompletedOnboarding {
+                NSApp.activate(ignoringOtherApps: true)
+                openWindow(id: "glossary")
+            }
             hasPermission = AccessibilityService.hasPermission
             if !capture.term.isEmpty {
                 handleCapture(capture.term)

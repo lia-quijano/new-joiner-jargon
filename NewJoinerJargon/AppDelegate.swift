@@ -42,6 +42,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         // Setup hotkey
         setupHotkey()
 
+        // On first launch, briefly show the popover so PopoverView can open the glossary window.
+        // The popover is transient and auto-closes once the window takes focus.
+        if !settings.hasCompletedOnboarding {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                self.showPopover()
+            }
+        }
+
         // Check accessibility
         if !AccessibilityService.hasPermission {
             AccessibilityService.requestPermission()

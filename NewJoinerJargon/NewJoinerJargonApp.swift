@@ -10,7 +10,7 @@ struct NewJoinerJargonApp: App {
                 .environment(appDelegate.glossaryStore)
                 .environment(appDelegate.settings)
                 .environment(appDelegate.navigationState)
-                .frame(minWidth: 500, minHeight: 400)
+                .frame(minWidth: 600, minHeight: 500)
         }
         .handlesExternalEvents(matching: [])
 
