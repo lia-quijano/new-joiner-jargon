@@ -4,87 +4,240 @@ struct WelcomeView: View {
     @Environment(GlossaryStore.self) private var store
     @Environment(SettingsManager.self) private var settings
 
-    @State private var selectedPacks: Set<String> = []
+    @State private var step = 0
+    @State private var selectedSectors: Set<String> = []
+    @State private var selectedFunctions: Set<String> = []
 
-    private let columns = [
-        GridItem(.adaptive(minimum: 180), spacing: 12)
-    ]
+    private let columns = [GridItem(.adaptive(minimum: 180), spacing: 12)]
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 28) {
+        VStack(alignment: .leading, spacing: 0) {
+            if step < 2 {
+                headerSection
+                    .padding(.bottom, 24)
+                gridSection
+            } else {
+                accessibilitySection
+            }
 
-                // Header
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Welcome to New Joiner Jargon")
-                        .font(.largeTitle.bold())
-                    Text("Pick the teams you work closest with. We'll pre-load your glossary with the jargon you're most likely to encounter — you can always capture more as you go.")
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+            footerSection
+                .padding(.top, 16)
+        }
+        .padding(32)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
 
-                // Industry grid
-                LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(IndustryPack.all) { pack in
-                        WelcomePackCard(
-                            pack: pack,
-                            isSelected: selectedPacks.contains(pack.id)
-                        ) {
-                            if selectedPacks.contains(pack.id) {
-                                selectedPacks.remove(pack.id)
-                            } else {
-                                selectedPacks.insert(pack.id)
+    // MARK: - Header
+
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(step == 0
+                 ? "Which industry are you in?"
+                 : "Which teams will you work closest with?")
+                .font(.largeTitle.bold())
+                .id("title-\(step)")
+                .transition(.opacity)
+            Text(step == 0
+                 ? "Pick the sector that best describes the company or role you're joining. We'll pre-load the jargon you're most likely to encounter."
+                 : "Select the functions you'll collaborate with most. You can always capture more terms as you go.")
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .id("subtitle-\(step)")
+                .transition(.opacity)
+        }
+        .animation(.easeInOut(duration: 0.2), value: step)
+    }
+
+    // MARK: - Grids (steps 0 & 1)
+
+    @ViewBuilder
+    private var gridSection: some View {
+        ZStack {
+            if step == 0 {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(IndustryPack.sectors) { pack in
+                            WelcomePackCard(
+                                pack: pack,
+                                isSelected: selectedSectors.contains(pack.id)
+                            ) {
+                                if selectedSectors.contains(pack.id) {
+                                    selectedSectors.remove(pack.id)
+                                } else {
+                                    selectedSectors.insert(pack.id)
+                                }
                             }
                         }
                     }
+                    .padding(.bottom, 8)
                 }
-
-                // Footer
-                HStack(alignment: .center) {
-                    Group {
-                        if selectedPacks.isEmpty {
-                            Text("Select the teams that match your role")
-                        } else {
-                            Text("\(selectedTermCount) terms from \(selectedPacks.count) \(selectedPacks.count == 1 ? "team" : "teams") selected")
+                .transition(.asymmetric(
+                    insertion: .move(edge: .leading).combined(with: .opacity),
+                    removal: .move(edge: .leading).combined(with: .opacity)
+                ))
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(IndustryPack.functions) { pack in
+                            WelcomePackCard(
+                                pack: pack,
+                                isSelected: selectedFunctions.contains(pack.id)
+                            ) {
+                                if selectedFunctions.contains(pack.id) {
+                                    selectedFunctions.remove(pack.id)
+                                } else {
+                                    selectedFunctions.insert(pack.id)
+                                }
+                            }
                         }
                     }
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 8)
+                }
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .move(edge: .trailing).combined(with: .opacity)
+                ))
+            }
+        }
+        .frame(maxHeight: .infinity)
+        .clipped()
+    }
 
-                    Spacer()
+    // MARK: - Accessibility step (step 2)
 
-                    Button("Skip for now") {
-                        settings.hasCompletedOnboarding = true
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.secondary)
-                    .font(.subheadline)
+    private var accessibilitySection: some View {
+        let alreadyGranted = AccessibilityService.hasPermission
 
-                    Button {
-                        let selected = IndustryPack.all.filter { selectedPacks.contains($0.id) }
-                        if !selected.isEmpty {
-                            store.seedIndustryPacks(selected)
-                        }
-                        settings.hasCompletedOnboarding = true
-                    } label: {
-                        Text(selectedPacks.isEmpty ? "Start with empty glossary" : "Populate my glossary →")
-                            .fontWeight(.medium)
-                    }
-                    .buttonStyle(.borderedProminent)
+        return VStack(spacing: 0) {
+            Spacer()
+
+            VStack(spacing: 20) {
+                Image(systemName: alreadyGranted ? "checkmark.circle.fill" : "keyboard")
+                    .font(.system(size: 52))
+                    .foregroundStyle(alreadyGranted ? .green : .secondary)
+
+                VStack(spacing: 8) {
+                    Text(alreadyGranted ? "You're all set" : "Allow Accessibility access")
+                        .font(.title2.bold())
+
+                    Text(alreadyGranted
+                         ? "NJJ can already read highlighted text across all your apps. Press ⌃⌥J anywhere to capture a term."
+                         : "NJJ uses macOS Accessibility to read the text you highlight — in Slack, Notion, your browser, anywhere. Without it, the ⌃⌥J hotkey can't capture your selection.")
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: 400)
                 }
             }
-            .padding(32)
+
+            Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .transition(.asymmetric(
+            insertion: .move(edge: .trailing).combined(with: .opacity),
+            removal: .move(edge: .trailing).combined(with: .opacity)
+        ))
+    }
+
+    // MARK: - Footer
+
+    private var footerSection: some View {
+        HStack(alignment: .center, spacing: 16) {
+            Button("← Back") {
+                withAnimation(.easeInOut(duration: 0.3)) { step -= 1 }
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
+            .opacity(step > 0 ? 1 : 0)
+            .disabled(step == 0)
+
+            Spacer()
+
+            HStack(spacing: 6) {
+                ForEach(0..<3, id: \.self) { i in
+                    Circle()
+                        .fill(step == i ? Color.primary : Color.secondary.opacity(0.3))
+                        .frame(width: 6, height: 6)
+                        .animation(.easeInOut, value: step)
+                }
+            }
+
+            Spacer()
+
+            footerTrailing
+        }
+    }
+
+    @ViewBuilder
+    private var footerTrailing: some View {
+        switch step {
+        case 0:
+            Button("Continue →") {
+                withAnimation(.easeInOut(duration: 0.3)) { step = 1 }
+            }
+            .buttonStyle(.borderedProminent)
+            .environment(\.controlActiveState, .key)
+
+        case 1:
+            HStack(spacing: 12) {
+                if selectedTermCount > 0 {
+                    Text("\(selectedTermCount) terms from \(selectedPackCount) \(selectedPackCount == 1 ? "pack" : "packs")")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Button("Continue →") {
+                    withAnimation(.easeInOut(duration: 0.3)) { step = 2 }
+                }
+                .buttonStyle(.borderedProminent)
+                .environment(\.controlActiveState, .key)
+            }
+
+        default:
+            HStack(spacing: 12) {
+                if !AccessibilityService.hasPermission {
+                    Button("Skip") { seedAndFinish() }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.secondary)
+                }
+                Button {
+                    if !AccessibilityService.hasPermission {
+                        AccessibilityService.requestPermission()
+                    }
+                    seedAndFinish()
+                } label: {
+                    Text(AccessibilityService.hasPermission ? "Get started →" : "Open System Settings →")
+                        .fontWeight(.medium)
+                }
+                .buttonStyle(.borderedProminent)
+                .environment(\.controlActiveState, .key)
+            }
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func seedAndFinish() {
+        let allSelected = IndustryPack.all.filter {
+            selectedSectors.contains($0.id) || selectedFunctions.contains($0.id)
+        }
+        if !allSelected.isEmpty { store.seedIndustryPacks(allSelected) }
+        settings.hasCompletedOnboarding = true
     }
 
     private var selectedTermCount: Int {
         IndustryPack.all
-            .filter { selectedPacks.contains($0.id) }
+            .filter { selectedSectors.contains($0.id) || selectedFunctions.contains($0.id) }
             .reduce(0) { $0 + $1.terms.count }
     }
+
+    private var selectedPackCount: Int {
+        selectedSectors.count + selectedFunctions.count
+    }
 }
+
+// MARK: - Pack Card
 
 private struct WelcomePackCard: View {
     let pack: IndustryPack
@@ -103,50 +256,51 @@ private struct WelcomePackCard: View {
                 HStack(alignment: .top) {
                     Image(systemName: pack.icon)
                         .font(.title2)
-                        .foregroundStyle(isSelected ? .white : pack.color)
+                        .foregroundStyle(pack.color)
 
                     Spacer()
 
-                    Text("\(pack.terms.count) terms")
-                        .font(.caption2)
-                        .fontWeight(.medium)
-                        .foregroundStyle(isSelected ? .white.opacity(0.85) : .secondary)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 3)
-                        .background(isSelected ? Color.white.opacity(0.2) : Color.secondary.opacity(0.1))
-                        .clipShape(Capsule())
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .font(.body)
+                        .foregroundStyle(isSelected ? Color.primary : Color.secondary.opacity(0.3))
                 }
 
                 Text(pack.name)
                     .font(.headline)
-                    .foregroundStyle(isSelected ? .white : .primary)
+                    .foregroundStyle(.primary)
                     .lineLimit(1)
 
                 VStack(alignment: .leading, spacing: 4) {
                     ForEach(sampleTerms, id: \.self) { term in
                         HStack(spacing: 5) {
                             Circle()
-                                .fill(isSelected ? Color.white.opacity(0.5) : pack.color.opacity(0.5))
+                                .fill(pack.color.opacity(0.5))
                                 .frame(width: 4, height: 4)
                             Text(term)
                                 .font(.caption2)
-                                .foregroundStyle(isSelected ? .white.opacity(0.75) : .secondary)
+                                .foregroundStyle(.secondary)
                                 .lineLimit(1)
                         }
                     }
                 }
+
+                Text("\(pack.terms.count) terms")
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.tertiary)
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected
-                          ? AnyShapeStyle(pack.color)
-                          : AnyShapeStyle(Color.secondary.opacity(isHovered ? 0.1 : 0.06)))
+                    .fill(Color.secondary.opacity(isSelected ? 0.12 : (isHovered ? 0.1 : 0.06)))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(isSelected ? Color.clear : Color.secondary.opacity(0.15), lineWidth: 1)
+                    .stroke(
+                        isSelected ? Color.primary.opacity(0.25) : Color.secondary.opacity(0.15),
+                        lineWidth: isSelected ? 1.5 : 1
+                    )
             )
         }
         .buttonStyle(.plain)
