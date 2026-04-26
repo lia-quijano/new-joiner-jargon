@@ -50,8 +50,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             }
         }
 
-        // Check accessibility
-        if !AccessibilityService.hasPermission {
+        // Only auto-prompt returning users — new users go through the onboarding wizard
+        if settings.hasCompletedOnboarding && !AccessibilityService.hasPermission {
             AccessibilityService.requestPermission()
         }
     }
@@ -75,6 +75,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     }
 
     @objc private func togglePopover() {
+        guard settings.hasCompletedOnboarding else { return }
         if popover.isShown {
             popover.performClose(nil)
         } else {
