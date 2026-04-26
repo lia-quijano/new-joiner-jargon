@@ -4,6 +4,16 @@ struct SeedTerm {
     let term: String
     let definition: String
     let category: TermCategory
+
+    /// Shows "TERM — Full Name" when the definition opens with an expansion,
+    /// otherwise just the term itself.
+    var displayLabel: String {
+        guard let dotRange = definition.range(of: ". ") else { return term }
+        let expansion = String(definition[definition.startIndex..<dotRange.lowerBound])
+        guard expansion.count < 60,
+              expansion.lowercased() != term.lowercased() else { return term }
+        return "\(term) — \(expansion)"
+    }
 }
 
 struct IndustryPack: Identifiable {

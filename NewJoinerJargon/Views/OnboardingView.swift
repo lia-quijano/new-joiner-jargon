@@ -94,7 +94,7 @@ private struct WelcomePackCard: View {
     @State private var isHovered = false
 
     private var sampleTerms: [String] {
-        Array(pack.terms.prefix(3).map { $0.term })
+        Array(pack.terms.prefix(3).map { $0.displayLabel })
     }
 
     var body: some View {
