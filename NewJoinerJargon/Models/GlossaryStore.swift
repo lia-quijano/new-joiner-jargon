@@ -93,6 +93,27 @@ final class GlossaryStore {
         return (try? context.fetch(descriptor)) ?? []
     }
 
+    func seedIndustryPacks(_ packs: [IndustryPack]) {
+        for pack in packs {
+            for seedTerm in pack.terms {
+                let normalized = seedTerm.term.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                let predicate = #Predicate<GlossaryTerm> { $0.term == normalized }
+                let descriptor = FetchDescriptor(predicate: predicate)
+                guard (try? context.fetch(descriptor).first) == nil else { continue }
+
+                let entry = GlossaryTerm(
+                    term: normalized,
+                    displayTerm: seedTerm.term.trimmingCharacters(in: .whitespacesAndNewlines),
+                    definition: seedTerm.definition,
+                    category: seedTerm.category
+                )
+                context.insert(entry)
+            }
+        }
+        try? context.save()
+        changeCount += 1
+    }
+
     /// One-time migration: populate displayTerm for existing terms
     func migrateDisplayTerms() {
         let migratedKey = "hasMigratedDisplayTerms"

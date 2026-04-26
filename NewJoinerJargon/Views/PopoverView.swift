@@ -41,6 +41,15 @@ struct PopoverView: View {
     }
 
     var body: some View {
+        if !settings.hasCompletedOnboarding {
+            OnboardingView()
+        } else {
+            mainView
+        }
+    }
+
+    @ViewBuilder
+    private var mainView: some View {
         VStack(alignment: .leading, spacing: 12) {
             // Header
             HStack {
